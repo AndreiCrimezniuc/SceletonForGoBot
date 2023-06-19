@@ -2,21 +2,23 @@ package eventer
 
 import (
 	"nokogiriwatir/notifierbot/pkg/cmdHandler"
-	"nokogiriwatir/notifierbot/pkg/receiver"
+	recieverPkg "nokogiriwatir/notifierbot/pkg/receiver"
 	"time"
 )
 
-func ListenEvents(receiver receiver.Receiver) error {
+func ListenEvents(receiver *recieverPkg.Receiver) error {
 	for {
-		updates, er := receiver.Updates(0, 100)
+		updates, er := receiver.Updates(-1, 1)
 
 		if er != nil {
 			return er
 		}
 
-		err := cmdHandler.HandleUpdates(updates)
-		if err != nil {
-			return err
+		if updates != nil {
+			err := cmdHandler.HandleUpdates(updates)
+			if err != nil {
+				return err
+			}
 		}
 
 		time.Sleep(time.Second * 1)

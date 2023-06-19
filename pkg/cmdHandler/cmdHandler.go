@@ -1,15 +1,19 @@
 package cmdHandler
 
 import (
-	"errors"
+	"github.com/spf13/viper"
 	"log"
 	"nokogiriwatir/notifierbot/pkg/client"
+	"nokogiriwatir/notifierbot/pkg/entities"
+	"nokogiriwatir/notifierbot/pkg/receiver"
+	SenderObj "nokogiriwatir/notifierbot/pkg/sender"
 )
 
 const (
 	helloCMD   = "/hello"
 	goodbyeCMD = "/goodbye"
 	startCMD   = "/start"
+	helpCMD    = "/help"
 )
 
 type sender interface {
@@ -21,31 +25,47 @@ type fetcher interface {
 }
 
 func HandleUpdates(updates []client.Update) error {
+	host := viper.GetString("HOST")
+	token := viper.GetString("TOKEN")
+
 	for _, val := range updates {
-		handleCMD(val.Message.Text)
+
+		if val.ID == receiver.GetLastMessageID() {
+			continue
+		}
+
+		handleCMD(
+			val.Message.Text,
+			&SenderObj.Sender{
+				Client: client.New(host, token),
+			},
+			&val.Message.User,
+			&val.Message.Chat)
+		receiver.SetLastMessageID(val.ID)
 	}
 	return nil
 }
 
-func handleCMD(cmd string) error {
+func handleCMD(cmd string, sender *SenderObj.Sender, user *entities.User, chat *entities.Chat) {
 	switch cmd {
 	case helloCMD:
 		handleHello()
 	case goodbyeCMD:
 		handleGoodBye()
-	case startCMD:
-		start()
+	case startCMD, helpCMD:
+		handleStart(sender, user, chat)
+
 	}
 
-	return errors.New("there is no command like that")
+	//log.Print("there is no command like that")
 }
+
+//func handleHelp() {
+//	handleStart()
+//}
 
 func handleGoodBye() {
 	log.Print("Goodbye too, man!")
-}
-
-func start() {
-
 }
 
 func handleHello() {

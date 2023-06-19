@@ -8,17 +8,17 @@ import (
 )
 
 type Sender struct {
-	client *client.Client
+	Client *client.Client
 }
 
 const SendMessageMethod = "sendMessage"
 
-func (s *Sender) SendMessage(ctx context.Context, chatID int, text string) error {
+func (s *Sender) SendMessage(ctx context.Context, chatID int64, text string) error {
 	q := url.Values{}
-	q.Add("chat_id", strconv.Itoa(chatID))
+	q.Add("chat_id", strconv.FormatInt(chatID, 10))
 	q.Add("text", text)
 
-	_, err := s.client.DoRequest(ctx, SendMessageMethod, q)
+	_, err := s.Client.DoRequest(ctx, SendMessageMethod, q)
 	if err != nil {
 		return err
 	}
