@@ -54,7 +54,6 @@ func handleCMD(cmd string, sender *SenderObj.Sender, user *entities.User, chat *
 		handleGoodBye()
 	case startCMD, helpCMD:
 		handleStart(sender, user, chat)
-
 	}
 
 	//log.Print("there is no command like that")
