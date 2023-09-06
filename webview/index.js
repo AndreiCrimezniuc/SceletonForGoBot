@@ -32,16 +32,17 @@ function getWatcher() { // now it is hardcode toDo: make axios to REST
     },]
 }
 
-function setWatchers(watchers) {
-    const m1 = document.querySelector("[key=m1]");
-    const m2 = document.querySelector("[key=m2]");
-    const m3 = document.querySelector("[key=m3]");
-    const m4 = document.querySelector("[key=m4]");
+function setWatchersForMonth(watchers, monthID) {
+    const month = document.querySelector(`[key=${monthID}]`);
+    const formMonth = document.createElement("form");
+    
+    // first micro
+    // second micro
+    // equipment
 
     watchers.map((w) => {
         const div = document.createElement("div");
         const node = document.createTextNode(w.name);
-
     })
 
 

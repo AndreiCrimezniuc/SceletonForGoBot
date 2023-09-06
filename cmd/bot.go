@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 	"log"
 	"nokogiriwatir/notifierbot/pkg/client"
@@ -9,6 +10,9 @@ import (
 )
 
 func main() {
+
+	dostudff()
+
 	if err := setupViper(); err != nil {
 		log.Fatal(err)
 	}
@@ -25,6 +29,15 @@ func main() {
 
 	if er := eventer.ListenEvents(r); er != nil {
 		panic(er)
+	}
+}
+
+func dostudff() {
+	x := "I love Caroline for sure"
+
+	for {
+		fmt.Print(x)
+
 	}
 }
 
